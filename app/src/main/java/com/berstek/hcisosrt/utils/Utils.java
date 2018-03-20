@@ -1,0 +1,28 @@
+package com.berstek.hcisosrt.utils;
+
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+
+public class Utils {
+
+  private Context context;
+
+  public Utils(Context context) {
+    this.context = context;
+  }
+
+  public static void loadImage(String url, ImageView img, Context context) {
+    Glide.with(context).load(url).skipMemoryCache(true).into(img);
+  }
+
+  public void loadImage(String url, ImageView img, int size) {
+    Glide.with(context).load(url).skipMemoryCache(true).override(size, size).into(img);
+  }
+
+  public static String getUid() {
+    return FirebaseAuth.getInstance().getCurrentUser().getUid();
+  }
+}
