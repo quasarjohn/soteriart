@@ -25,4 +25,8 @@ public class Utils {
   public static String getUid() {
     return FirebaseAuth.getInstance().getCurrentUser().getUid();
   }
+
+  public void test() {
+
+  }
 }
