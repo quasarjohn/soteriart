@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.berstek.hcisosrt.R;
 import com.berstek.hcisosrt.view.assignment.AssignmentFragment;
+import com.berstek.hcisosrt.view.emergencies.EmergenciesFragment;
 import com.berstek.hcisosrt.view.team.TeamFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -46,6 +47,10 @@ public class ViewPagerActivity extends AppCompatActivity {
     fragments.add(teamFragment);
     tab.addTab(tab.newTab());
 
+    EmergenciesFragment emergenciesFragment = new EmergenciesFragment();
+    fragments.add(emergenciesFragment);
+    tab.addTab(tab.newTab());
+
     AssignmentFragment assignmentFragment = new AssignmentFragment();
     fragments.add(assignmentFragment);
     tab.addTab(tab.newTab());
@@ -56,7 +61,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     tab.getTabAt(0).setCustomView(getLayoutInflater().inflate(R.layout.tablayout_view, null));
     tab.getTabAt(1).setCustomView(getLayoutInflater().inflate(R.layout.tablayout_view_deselected, null));
-
+    tab.getTabAt(2).setCustomView(getLayoutInflater().inflate(R.layout.tablayout_view_deselected, null));
 
     tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override

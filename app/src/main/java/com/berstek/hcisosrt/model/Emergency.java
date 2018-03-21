@@ -10,7 +10,8 @@ public class Emergency {
   private long time_stamp;
   private String type, details;
   private ArrayList<String> attachments_url;
-  private Status status;
+  //0 pending 1 dispatched 2 finished
+  private int status;
 
   private String rt_uid;
 
@@ -57,13 +58,6 @@ public class Emergency {
     this.attachments_url = attachments_url;
   }
 
-  public Status getStatus() {
-    return status;
-  }
-
-  public void setStatus(Status status) {
-    this.status = status;
-  }
 
   public String getKey() {
     return key;
@@ -73,9 +67,6 @@ public class Emergency {
     this.key = key;
   }
 
-  public enum Status {
-    PENDING, DISPATCHED, RESLOVED
-  }
 
   public String getRt_uid() {
     return rt_uid;
@@ -83,5 +74,13 @@ public class Emergency {
 
   public void setRt_uid(String rt_uid) {
     this.rt_uid = rt_uid;
+  }
+
+  public int getStatus() {
+    return status;
+  }
+
+  public void setStatus(int status) {
+    this.status = status;
   }
 }

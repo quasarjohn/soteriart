@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Utils {
 
   private Context context;
@@ -28,5 +31,10 @@ public class Utils {
 
   public void test() {
 
+  }
+
+  public static String formatDate(long t) {
+    SimpleDateFormat format = new SimpleDateFormat("mm:hh a");
+    return format.format(new Date(t));
   }
 }
