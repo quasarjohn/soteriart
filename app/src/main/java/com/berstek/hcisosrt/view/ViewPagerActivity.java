@@ -65,6 +65,7 @@ public class ViewPagerActivity extends AppCompatActivity
     viewPager.setAdapter(new ViewpagerAdapter(getSupportFragmentManager()));
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));
     tab.setupWithViewPager(viewPager);
+    viewPager.setOffscreenPageLimit(3);
 
     tab.getTabAt(0).setCustomView(getLayoutInflater().inflate(R.layout.tablayout_view, null));
     tab.getTabAt(1).setCustomView(getLayoutInflater().inflate(R.layout.tablayout_view_deselected, null));

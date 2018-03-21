@@ -15,6 +15,7 @@ import com.afollestad.assent.Assent;
 import com.berstek.hcisosrt.R;
 import com.berstek.hcisosrt.firebase_da.DA;
 import com.berstek.hcisosrt.model.Emergency;
+import com.berstek.hcisosrt.model.EtaDetails;
 import com.berstek.hcisosrt.model.User;
 import com.berstek.hcisosrt.model.UserLocation;
 import com.berstek.hcisosrt.presentor.LocationPresentor;
@@ -23,13 +24,14 @@ import com.bumptech.glide.util.Util;
 
 public class AssignmentFragment extends Fragment
     implements AssignmentPresentor.AssignmentPresentorCallback, View.OnClickListener,
-    LocationPresentor.LocationPresentorCallback {
+    LocationPresentor.LocationPresentorCallback, EtaPresentor.EtaPresentorCallback {
 
   private View view;
 
   private String team_uid;
 
   private AssignmentPresentor assignmentPresentor;
+  private EtaPresentor etaPresentor;
 
   private ImageView typeImg, dp;
   private TextView detailsTxt, addressTxt, etaTxt, nameTxt;
@@ -38,6 +40,8 @@ public class AssignmentFragment extends Fragment
 
   private MapDialogFragment mapDialogFragment;
   private LocationPresentor locationPresentor;
+
+  private double lat, lang, lat1, lang1;
 
   public AssignmentFragment() {
     // Required empty public constructor
@@ -51,6 +55,8 @@ public class AssignmentFragment extends Fragment
 
     mapDialogFragment = new MapDialogFragment();
 
+    etaPresentor = new EtaPresentor(getContext());
+    etaPresentor.setEtaPresentorCallback(this);
 
     locationPresentor = new LocationPresentor(getActivity());
     locationPresentor.setLocationPresentorCallback(this);
@@ -94,8 +100,10 @@ public class AssignmentFragment extends Fragment
   @Override
   public void onAssignedEmergencyLoaded(Emergency emergency) {
     UserLocation userLocation = emergency.getUser_location();
+    lat1 = userLocation.getLatitude();
+    lang1 = userLocation.getLongitude();
 
-    Utils.loadImage(Utils.getIconUrl(emergency.getType()), typeImg, getContext());
+    Utils.loadImage(Utils.getIconUrl(emergency.getType()), typeImg, getActivity());
     detailsTxt.setText(emergency.getDetails());
     assignmentPresentor.loadAssignedUser(emergency.getKey());
 
@@ -104,6 +112,8 @@ public class AssignmentFragment extends Fragment
     if (mapDialogFragment != null) {
       mapDialogFragment.updateUserMarker(userLocation.getLatitude(), userLocation.getLongitude());
     }
+
+    updateEta(lat, lang, lat1, lang1);
   }
 
   @Override
@@ -123,9 +133,13 @@ public class AssignmentFragment extends Fragment
 
   @Override
   public void onLocationUpdated(UserLocation userLocation) {
+    lat = userLocation.getLatitude();
+    lang = userLocation.getLongitude();
     if (mapDialogFragment != null) {
       mapDialogFragment.updateTeamMarker(userLocation.getLatitude(), userLocation.getLongitude());
     }
+
+    updateEta(lat, lang, lat1, lang1);
   }
 
   @Override
@@ -133,5 +147,14 @@ public class AssignmentFragment extends Fragment
     if (getActivity() != null) {
       getActivity().runOnUiThread(() -> addressTxt.setText(address));
     }
+  }
+
+  private void updateEta(double lat, double lang, double lat1, double lang1) {
+    etaPresentor.getEta(lat, lang, lat1, lang1);
+  }
+
+  @Override
+  public void onEtaCalculated(EtaDetails eta) {
+    etaTxt.setText(eta.getDuration().get("text").toString());
   }
 }

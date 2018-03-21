@@ -89,7 +89,6 @@ public class LocationPresentor implements ReverseGeocodePresentor.ReverseGeocode
   @Override
   public void onReverseGeocode(String address) {
     locationPresentorCallback.onReverseGeocode(address);
-
   }
 
 
@@ -101,13 +100,5 @@ public class LocationPresentor implements ReverseGeocodePresentor.ReverseGeocode
 
   public void setLocationPresentorCallback(LocationPresentorCallback locationPresentorCallback) {
     this.locationPresentorCallback = locationPresentorCallback;
-  }
-
-  public void setDetails(String details) {
-    this.details = details;
-  }
-
-  public void setSelection(String selection) {
-    this.selection = selection;
   }
 }
