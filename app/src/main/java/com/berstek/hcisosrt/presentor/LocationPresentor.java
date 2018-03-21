@@ -17,11 +17,13 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
 
 
-public class LocationPresentor {
+public class LocationPresentor implements ReverseGeocodePresentor.ReverseGeocodePresentorCallback {
 
   /*
   gets the user location and updates the data in firebase
    */
+
+  private ReverseGeocodePresentor reverseGeocodePresentor;
 
   private FusedLocationProviderClient fusedLocationProviderClient;
   private LocationRequest mLocationRequest;
@@ -33,10 +35,14 @@ public class LocationPresentor {
 
   private long timeStamp;
 
+  private Activity activity;
 
   public LocationPresentor(Activity activity) {
+    this.activity = activity;
     timeStamp = System.currentTimeMillis();
     emergencyDA = new EmergencyDA();
+    reverseGeocodePresentor = new ReverseGeocodePresentor(activity);
+    reverseGeocodePresentor.setReverseGeocodePresentorCallback(this);
 
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
 
@@ -75,19 +81,15 @@ public class LocationPresentor {
     userLocation.setLongitude(location.getLongitude());
     locationPresentorCallback.onLocationUpdated(userLocation);
 
-    Emergency emergency = new Emergency();
-    emergency.setUser_location(userLocation);
-    emergency.setTime_stamp(timeStamp);
-    emergency.setDetails(details);
-    emergency.setType(selection);
-
-    emergencyDA.updateEmergency(emergency);
-
-    reverseGeocode(location.getLatitude(), location.getLongitude());
+    reverseGeocodePresentor.getAddressFromLocation(userLocation.getLatitude(),
+        userLocation.getLongitude());
   }
 
-  private void reverseGeocode(double latitude, double longitude) {
-    locationPresentorCallback.onReverseGeocode(null);
+
+  @Override
+  public void onReverseGeocode(String address) {
+    locationPresentorCallback.onReverseGeocode(address);
+
   }
 
 

@@ -32,7 +32,9 @@ public class AssignmentPresentor {
 
       @Override
       public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+        Emergency emergency = dataSnapshot.getValue(Emergency.class);
+        emergency.setKey(dataSnapshot.getKey());
+        assignmentPresentorCallback.onAssignedEmergencyLoaded(emergency);
       }
 
       @Override

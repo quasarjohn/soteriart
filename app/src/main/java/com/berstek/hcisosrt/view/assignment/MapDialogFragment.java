@@ -1,6 +1,7 @@
 package com.berstek.hcisosrt.view.assignment;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,26 +10,33 @@ import android.view.ViewGroup;
 
 import com.berstek.hcisosrt.R;
 import com.berstek.hcisosrt.custom_classes.SupportCustomDialogFragment;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MapDialogFragment extends SupportCustomDialogFragment implements OnMapReadyCallback {
 
-  private GoogleMap mMap;
+  private GoogleMap map;
   private View view;
 
+  private String userPhotoUrl;
 
   public MapDialogFragment() {
     // Required empty public constructor
   }
-
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,13 +51,45 @@ public class MapDialogFragment extends SupportCustomDialogFragment implements On
     return view;
   }
 
+  private boolean ready = false;
+  private Marker teamMarker, userMarker;
+
   @Override
   public void onMapReady(GoogleMap googleMap) {
-    mMap = googleMap;
+    map = googleMap;
+    LatLng latLng = new LatLng(12.8797, 121.77);
 
-    // Add a marker in Sydney and move the camera
-    LatLng sydney = new LatLng(-34, 151);
-    mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    BitmapDescriptor customMarker =
+        BitmapDescriptorFactory.fromResource(R.drawable.img_ambulance);
+    teamMarker = map.addMarker(new MarkerOptions().position(latLng).title("RT").icon(customMarker));
+
+    userMarker = map.addMarker(new MarkerOptions().position(latLng).
+        title("User"));
+
+
+    ready = true;
+
+  }
+
+
+  public void updateTeamMarker(double lat, double lang) {
+    if (ready) {
+      LatLng latLng = new LatLng(lat, lang);
+      teamMarker.setPosition(latLng);
+
+      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+      map.animateCamera(cameraUpdate);
+    }
+  }
+
+  public void updateUserMarker(double lat, double lang) {
+    if (ready) {
+      LatLng latLng = new LatLng(lat, lang);
+      userMarker.setPosition(latLng);
+    }
+  }
+
+  public void setUserPhotoUrl(String userPhotoUrl) {
+    this.userPhotoUrl = userPhotoUrl;
   }
 }
