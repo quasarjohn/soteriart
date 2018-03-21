@@ -23,7 +23,6 @@ public class LocationPresentor implements ReverseGeocodePresentor.ReverseGeocode
   gets the user location and updates the data in firebase
    */
 
-  private ReverseGeocodePresentor reverseGeocodePresentor;
 
   private FusedLocationProviderClient fusedLocationProviderClient;
   private LocationRequest mLocationRequest;
@@ -41,8 +40,7 @@ public class LocationPresentor implements ReverseGeocodePresentor.ReverseGeocode
     this.activity = activity;
     timeStamp = System.currentTimeMillis();
     emergencyDA = new EmergencyDA();
-    reverseGeocodePresentor = new ReverseGeocodePresentor(activity);
-    reverseGeocodePresentor.setReverseGeocodePresentorCallback(this);
+
 
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
 
@@ -81,8 +79,7 @@ public class LocationPresentor implements ReverseGeocodePresentor.ReverseGeocode
     userLocation.setLongitude(location.getLongitude());
     locationPresentorCallback.onLocationUpdated(userLocation);
 
-    reverseGeocodePresentor.getAddressFromLocation(userLocation.getLatitude(),
-        userLocation.getLongitude());
+
   }
 
 

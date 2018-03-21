@@ -15,6 +15,8 @@ public class ResponseTeam {
   private String dispatched_to;
   private long dispatched_on;
 
+  private UserLocation user_location;
+
   @Exclude
   private String key;
 
@@ -64,5 +66,13 @@ public class ResponseTeam {
 
   public void setKey(String key) {
     this.key = key;
+  }
+
+  public UserLocation getUser_location() {
+    return user_location;
+  }
+
+  public void setUser_location(UserLocation user_location) {
+    this.user_location = user_location;
   }
 }

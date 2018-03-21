@@ -1,6 +1,7 @@
 package com.berstek.hcisosrt.firebase_da;
 
 
+import com.berstek.hcisosrt.model.UserLocation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.Query;
 
@@ -22,5 +23,10 @@ public class RtDA extends DA {
     mRootRef.child("response_teams").child(team_uid).child("members").child(uid).setValue(true);
     mRootRef.child("users").child(uid).child("leader_uid").setValue(leader_uid);
   }
+
+  public void updateRtLocation(String uid, UserLocation userLocation) {
+    mRootRef.child("response_teams").child(uid).child("user_location").setValue(userLocation);
+  }
+
 
 }

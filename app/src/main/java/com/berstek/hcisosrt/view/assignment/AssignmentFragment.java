@@ -19,12 +19,14 @@ import com.berstek.hcisosrt.model.EtaDetails;
 import com.berstek.hcisosrt.model.User;
 import com.berstek.hcisosrt.model.UserLocation;
 import com.berstek.hcisosrt.presentor.LocationPresentor;
+import com.berstek.hcisosrt.presentor.ReverseGeocodePresentor;
 import com.berstek.hcisosrt.utils.Utils;
 import com.bumptech.glide.util.Util;
 
 public class AssignmentFragment extends Fragment
     implements AssignmentPresentor.AssignmentPresentorCallback, View.OnClickListener,
-    LocationPresentor.LocationPresentorCallback, EtaPresentor.EtaPresentorCallback {
+    LocationPresentor.LocationPresentorCallback, EtaPresentor.EtaPresentorCallback,
+    ReverseGeocodePresentor.ReverseGeocodePresentorCallback {
 
   private View view;
 
@@ -41,6 +43,8 @@ public class AssignmentFragment extends Fragment
   private MapDialogFragment mapDialogFragment;
   private LocationPresentor locationPresentor;
 
+  private ReverseGeocodePresentor reverseGeocodePresentor;
+
   private double lat, lang, lat1, lang1;
 
   public AssignmentFragment() {
@@ -52,6 +56,9 @@ public class AssignmentFragment extends Fragment
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     Assent.setActivity(getActivity(), getActivity());
+
+    reverseGeocodePresentor = new ReverseGeocodePresentor(getActivity());
+    reverseGeocodePresentor.setReverseGeocodePresentorCallback(this);
 
     mapDialogFragment = new MapDialogFragment();
 
@@ -103,9 +110,13 @@ public class AssignmentFragment extends Fragment
     lat1 = userLocation.getLatitude();
     lang1 = userLocation.getLongitude();
 
-    Utils.loadImage(Utils.getIconUrl(emergency.getType()), typeImg, getActivity());
-    detailsTxt.setText(emergency.getDetails());
-    assignmentPresentor.loadAssignedUser(emergency.getKey());
+    if (firstLoad) {
+      Utils.loadImage(Utils.getIconUrl(emergency.getType()), typeImg, getActivity());
+      detailsTxt.setText(emergency.getDetails());
+      assignmentPresentor.loadAssignedUser(emergency.getKey());
+
+      firstLoad = false;
+    }
 
     new DA().log(userLocation);
 
@@ -114,7 +125,10 @@ public class AssignmentFragment extends Fragment
     }
 
     updateEta(lat, lang, lat1, lang1);
+    reverseGeocodePresentor.getAddressFromLocation(lat1, lang1);
   }
+
+  boolean firstLoad = true;
 
   @Override
   public void onUserLoaded(User user) {
@@ -140,6 +154,7 @@ public class AssignmentFragment extends Fragment
     }
 
     updateEta(lat, lang, lat1, lang1);
+    assignmentPresentor.updateLocationInFirebase(team_uid, userLocation);
   }
 
   @Override

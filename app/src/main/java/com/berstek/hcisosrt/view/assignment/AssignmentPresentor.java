@@ -1,10 +1,12 @@
 package com.berstek.hcisosrt.view.assignment;
 
 import com.berstek.hcisosrt.firebase_da.EmergencyDA;
+import com.berstek.hcisosrt.firebase_da.RtDA;
 import com.berstek.hcisosrt.firebase_da.UserDA;
 import com.berstek.hcisosrt.model.Emergency;
 
 import com.berstek.hcisosrt.model.User;
+import com.berstek.hcisosrt.model.UserLocation;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,10 +16,12 @@ public class AssignmentPresentor {
 
   private EmergencyDA emergencyDA;
   private UserDA userDA;
+  private RtDA rtDA;
 
   public AssignmentPresentor() {
     emergencyDA = new EmergencyDA();
     userDA = new UserDA();
+    rtDA = new RtDA();
   }
 
   public void init(String uid) {
@@ -84,5 +88,9 @@ public class AssignmentPresentor {
 
   public void setAssignmentPresentorCallback(AssignmentPresentorCallback assignmentPresentorCallback) {
     this.assignmentPresentorCallback = assignmentPresentorCallback;
+  }
+
+  public void updateLocationInFirebase(String uid, UserLocation userLocation) {
+    rtDA.updateRtLocation(uid, userLocation);
   }
 }
