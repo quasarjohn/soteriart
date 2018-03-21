@@ -13,9 +13,12 @@ import android.widget.TextView;
 import com.berstek.hcisosrt.R;
 import com.berstek.hcisosrt.firebase_da.DA;
 import com.berstek.hcisosrt.model.Emergency;
+import com.berstek.hcisosrt.model.User;
 import com.berstek.hcisosrt.utils.Utils;
+import com.bumptech.glide.util.Util;
 
-public class AssignmentFragment extends Fragment implements AssignmentPresentor.AssignmentPresentorCallback {
+public class AssignmentFragment extends Fragment
+    implements AssignmentPresentor.AssignmentPresentorCallback, View.OnClickListener {
 
   private View view;
 
@@ -27,6 +30,8 @@ public class AssignmentFragment extends Fragment implements AssignmentPresentor.
   private TextView detailsTxt, addressTxt, etaTxt, nameTxt;
 
   private Button doneBtn, mapBtn;
+
+  private MapDialogFragment mapDialogFragment;
 
   public AssignmentFragment() {
     // Required empty public constructor
@@ -47,6 +52,9 @@ public class AssignmentFragment extends Fragment implements AssignmentPresentor.
     doneBtn = view.findViewById(R.id.doneBtn);
     mapBtn = view.findViewById(R.id.mapBtn);
 
+    mapBtn.setOnClickListener(this);
+    doneBtn.setOnClickListener(this);
+
     team_uid = getArguments().getString("team_uid");
     assignmentPresentor = new AssignmentPresentor();
     assignmentPresentor.setAssignmentPresentorCallback(this);
@@ -60,6 +68,22 @@ public class AssignmentFragment extends Fragment implements AssignmentPresentor.
   public void onAssignedEmergencyLoaded(Emergency emergency) {
     Utils.loadImage(Utils.getIconUrl(emergency.getType()), typeImg, getContext());
     detailsTxt.setText(emergency.getDetails());
+    assignmentPresentor.loadAssignedUser(emergency.getKey());
+  }
 
+  @Override
+  public void onUserLoaded(User user) {
+    Utils.loadImage(user.getPhoto_url(), dp, getContext());
+    nameTxt.setText(user.getFullName());
+  }
+
+  @Override
+  public void onClick(View view) {
+    int id = view.getId();
+
+    if (id == R.id.mapBtn) {
+      mapDialogFragment = new MapDialogFragment();
+      mapDialogFragment.show(getFragmentManager(), null);
+    }
   }
 }
