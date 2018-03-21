@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/content_main"
     android:layout_height="match_parent"
-    tools:context="com.berstek.hcisosrt.MainActivity">
+    tools:context="com.berstek.hcisosrt.view.team_selection.TeamSelectionActivity">
 
 
 

@@ -1,5 +1,7 @@
 package com.berstek.hcisosrt.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.HashMap;
 
 public class ResponseTeam {
@@ -12,6 +14,9 @@ public class ResponseTeam {
   //uid of the emergency the team is dispatched to
   private String dispatched_to;
   private long dispatched_on;
+
+  @Exclude
+  private String key;
 
   public String getLeader_uid() {
     return leader_uid;
@@ -51,5 +56,13 @@ public class ResponseTeam {
 
   public void setTeam_name(String team_name) {
     this.team_name = team_name;
+  }
+
+  public String getKey() {
+    return key;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
   }
 }

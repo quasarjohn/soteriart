@@ -9,6 +9,10 @@ public class RtDA extends DA {
     return mRootRef.child("response_teams").orderByChild("leader_uid").equalTo(leader_uid);
   }
 
+  public Query queryRtViaUid(String uid) {
+    return mRootRef.child("response_teams").child(uid);
+  }
+
   public Query queryAllRt() {
     return mRootRef.child("response_teams");
   }

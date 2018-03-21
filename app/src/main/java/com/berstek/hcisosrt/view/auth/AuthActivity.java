@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.berstek.hcisosrt.MainActivity;
+import com.berstek.hcisosrt.view.team_selection.TeamSelectionActivity;
 import com.berstek.hcisosrt.R;
 import com.berstek.hcisosrt.callback.AuthCallback;
 import com.berstek.hcisosrt.presentor.GoogleAuthPresentor;
@@ -79,7 +79,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
   }
 
   private void loadMainActivity() {
-    Intent intent = new Intent(this, MainActivity.class);
+    Intent intent = new Intent(this, TeamSelectionActivity.class);
     startActivity(intent);
   }
 }

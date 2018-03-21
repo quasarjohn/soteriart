@@ -17,6 +17,7 @@ public class TeamSelectionPresentor {
       @Override
       public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         ResponseTeam responseTeam = dataSnapshot.getValue(ResponseTeam.class);
+        responseTeam.setKey(dataSnapshot.getKey());
         teamSelectionPresentorCallback.onRtLoaded(responseTeam);
       }
 

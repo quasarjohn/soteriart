@@ -1,4 +1,4 @@
-package com.berstek.hcisosrt.view.home;
+package com.berstek.hcisosrt.view.team_selection;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -75,7 +75,7 @@ public class TeamSelectionAdapter extends RecyclerView.Adapter<TeamSelectionAdap
       super(itemView);
 
       dp = itemView.findViewById(R.id.dp);
-      teamNameTxt = itemView.findViewById(R.id.teamNameTxt);
+      teamNameTxt = itemView.findViewById(R.id.title);
       leaderTxt = itemView.findViewById(R.id.leaderTxt);
 
       itemView.setOnClickListener(this);
