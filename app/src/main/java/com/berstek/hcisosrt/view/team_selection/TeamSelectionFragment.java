@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import com.berstek.hcisosrt.R;
 import com.berstek.hcisosrt.firebase_da.DA;
 import com.berstek.hcisosrt.model.ResponseTeam;
-import com.berstek.hcisosrt.presentor.TeamSelectionPresentor;
+import com.berstek.hcisosrt.utils.Utils;
 import com.berstek.hcisosrt.view.ViewPagerActivity;
-import com.berstek.hcisosrt.view.team.TeamFragment;
 
 import java.util.ArrayList;
 
@@ -74,11 +73,14 @@ public class TeamSelectionFragment extends Fragment
   @Override
   public void onTeamSelected(int pos) {
     //TODO add user to team and make his leader the team leader of the team
-
     ResponseTeam team = responseTeams.get(pos);
+
+    teamSelectionPresentor.addUserToTeam(Utils.getUid(), team.getLeader_uid(), team.getKey());
 
     Intent intent = new Intent(getActivity(), ViewPagerActivity.class);
     intent.putExtra("leader_uid", team.getLeader_uid());
+    intent.putExtra("team_uid", team.getKey());
+
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);

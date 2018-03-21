@@ -37,4 +37,22 @@ public class Utils {
     SimpleDateFormat format = new SimpleDateFormat("mm:hh a");
     return format.format(new Date(t));
   }
-}
+
+  public static String getIconUrl(String type) {
+    String typeImg = IconsUrl.AMBULANCE;
+
+
+    switch (type) {
+      case "Fire": typeImg = IconsUrl.FIRE; break;
+      case "Ambulance": typeImg = IconsUrl.AMBULANCE; break;
+      case "Car Accident": typeImg = IconsUrl.CAR; break;
+      case "Crime": typeImg = IconsUrl.BADGE; break;
+      case "Other": typeImg = IconsUrl.OTHER; break;
+
+      default: break;
+
+    }
+
+    return typeImg;
+  }
+ }

@@ -17,14 +17,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
-public class ViewPagerActivity extends AppCompatActivity {
+public class ViewPagerActivity extends AppCompatActivity
+    implements EmergenciesFragment.EmergenciesFragmentCallback {
 
   private TabLayout tab;
   private ViewPager viewPager;
 
   private ArrayList<Fragment> fragments;
 
-  private String team_uid;
+  private String leader_uid, team_uid;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     getSupportActionBar().hide();
 
-    team_uid = getIntent().getExtras().getString("leader_uid");
+    leader_uid = getIntent().getExtras().getString("leader_uid");
+    team_uid = getIntent().getExtras().getString("team_uid");
 
     fragments = new ArrayList<>();
 
@@ -42,16 +44,21 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     TeamFragment teamFragment = new TeamFragment();
     Bundle teamFragmentBundle = new Bundle();
-    teamFragmentBundle.putString("leader_uid", team_uid);
+    teamFragmentBundle.putString("leader_uid", leader_uid);
     teamFragment.setArguments(teamFragmentBundle);
     fragments.add(teamFragment);
     tab.addTab(tab.newTab());
 
     EmergenciesFragment emergenciesFragment = new EmergenciesFragment();
+    emergenciesFragment.setEmergenciesFragmentCallback(this);
+    Bundle emBundle = new Bundle();
+    emBundle.putString("team_uid", team_uid);
+    emergenciesFragment.setArguments(emBundle);
     fragments.add(emergenciesFragment);
     tab.addTab(tab.newTab());
 
     AssignmentFragment assignmentFragment = new AssignmentFragment();
+    assignmentFragment.setArguments(emBundle);
     fragments.add(assignmentFragment);
     tab.addTab(tab.newTab());
 
@@ -81,6 +88,12 @@ public class ViewPagerActivity extends AppCompatActivity {
 
       }
     });
+  }
+
+  @Override
+  public void onEmergencyAssigned() {
+    tab.setScrollPosition(2, 0f, true);
+    viewPager.setCurrentItem(2);
   }
 
   private class ViewpagerAdapter extends FragmentStatePagerAdapter {

@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.berstek.hcisosrt.R;
+import com.berstek.hcisosrt.firebase_da.DA;
 import com.berstek.hcisosrt.model.Emergency;
-import com.berstek.hcisosrt.presentor.EmergenciesPresentor;
 
 import java.util.ArrayList;
 
@@ -30,6 +30,8 @@ public class EmergenciesFragment extends Fragment
 
   private ArrayList<Emergency> emergencies;
 
+  private String team_uid;
+
   public EmergenciesFragment() {
     // Required empty public constructor
   }
@@ -40,7 +42,7 @@ public class EmergenciesFragment extends Fragment
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     view = inflater.inflate(R.layout.fragment_emergencies, container, false);
-
+    team_uid = getArguments().getString("team_uid");
     emergencies = new ArrayList<>();
 
     emergenciesPresentor = new EmergenciesPresentor();
@@ -63,7 +65,33 @@ public class EmergenciesFragment extends Fragment
   }
 
   @Override
+  public void onEmergencyRemoved(Emergency emergency) {
+    String key = emergency.getKey();
+
+    for (int i = 0; i < emergencies.size(); i++) {
+      if (emergencies.get(i).getKey().equals(key)) {
+        emergencies.remove(i);
+        emergenciesAdapter.notifyItemRemoved(i);
+      }
+    }
+  }
+
+  @Override
   public void onEmergencySelected(int pos) {
-    //TODO, set status of emergency to 1
+    Emergency emergency = emergencies.get(pos);
+
+    emergenciesPresentor.assignTeam(emergency.getKey(), team_uid);
+
+    emergenciesFragmentCallback.onEmergencyAssigned();
+  }
+
+  private EmergenciesFragmentCallback emergenciesFragmentCallback;
+
+  public interface EmergenciesFragmentCallback {
+    void onEmergencyAssigned();
+  }
+
+  public void setEmergenciesFragmentCallback(EmergenciesFragmentCallback emergenciesFragmentCallback) {
+    this.emergenciesFragmentCallback = emergenciesFragmentCallback;
   }
 }

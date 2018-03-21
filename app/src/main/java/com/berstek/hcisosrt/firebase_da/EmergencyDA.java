@@ -16,11 +16,18 @@ public class EmergencyDA extends DA {
         });
   }
 
-  public Query queryAllEmergencies() {
-    return mRootRef.child("emergencies");
+  public void assignTeamToEmergency(String uid, String team_uid) {
+    mRootRef.child("emergencies").child(uid).child("rt_uid").setValue(team_uid);
+    mRootRef.child("emergencies").child(uid).child("status").setValue(1);
+
   }
 
-  public interface EmergencyDaCallback {
-    void onEmergencyUpdated();
+  public Query queryAllEmergencies() {
+    return mRootRef.child("emergencies").orderByChild("status").equalTo(0);
   }
+
+  public Query queryEmergencyByTeamUid(String uid) {
+    return mRootRef.child("emergencies").orderByChild("rt_uid").equalTo(uid);
+  }
+
 }

@@ -1,4 +1,4 @@
-package com.berstek.hcisosrt.presentor;
+package com.berstek.hcisosrt.view.team_selection;
 
 import com.berstek.hcisosrt.firebase_da.RtDA;
 import com.berstek.hcisosrt.model.ResponseTeam;
@@ -24,6 +24,7 @@ public class TeamSelectionPresentor {
       @Override
       public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         ResponseTeam responseTeam = dataSnapshot.getValue(ResponseTeam.class);
+        responseTeam.setKey(dataSnapshot.getKey());
         teamSelectionPresentorCallback.onRtChanged(responseTeam);
       }
 
@@ -54,5 +55,9 @@ public class TeamSelectionPresentor {
 
   public void setTeamSelectionPresentorCallback(TeamSelectionPresentorCallback teamSelectionPresentorCallback) {
     this.teamSelectionPresentorCallback = teamSelectionPresentorCallback;
+  }
+
+  public void addUserToTeam(String user_uid, String leader_uid, String team_uid) {
+    rtDA.addUserToRt(user_uid, leader_uid, team_uid);
   }
 }

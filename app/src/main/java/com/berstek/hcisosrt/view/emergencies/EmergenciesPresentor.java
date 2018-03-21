@@ -1,5 +1,6 @@
-package com.berstek.hcisosrt.presentor;
+package com.berstek.hcisosrt.view.emergencies;
 
+import com.berstek.hcisosrt.firebase_da.DA;
 import com.berstek.hcisosrt.firebase_da.EmergencyDA;
 import com.berstek.hcisosrt.model.Emergency;
 import com.google.firebase.database.ChildEventListener;
@@ -30,7 +31,9 @@ public class EmergenciesPresentor {
 
       @Override
       public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+        Emergency emergency = dataSnapshot.getValue(Emergency.class);
+        emergency.setKey(dataSnapshot.getKey());
+        emergenciesPresentorCallback.onEmergencyRemoved(emergency);
       }
 
       @Override
@@ -49,9 +52,16 @@ public class EmergenciesPresentor {
 
   public interface EmergenciesPresentorCallback {
     void onEmergencyLoaded(Emergency emergency);
+
+    void onEmergencyRemoved(Emergency emergency);
+
   }
 
   public void setEmergenciesPresentorCallback(EmergenciesPresentorCallback emergenciesPresentorCallback) {
     this.emergenciesPresentorCallback = emergenciesPresentorCallback;
+  }
+
+  public void assignTeam(String emergency_uid, String team_uid) {
+    emergencyDA.assignTeamToEmergency(emergency_uid, team_uid);
   }
 }
